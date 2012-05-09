@@ -28,6 +28,8 @@ def fp(transactions, min_support)
   f = FpGrowth::FpTree.new(min_support,items,transactions)
   puts "\nFrequent Itemsets\n\n"
   puts f.fp_growth
+  puts "\nStrong Association Rules\n"
+  puts FpGrowth::Helper.create_assoziation_rules(f.fp_growth,0.10)
 end
 
 fp(parsefile(ARGV[0]), Integer(ARGV[1]))
