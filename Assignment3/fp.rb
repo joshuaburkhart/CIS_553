@@ -1,6 +1,6 @@
-#!/usr/local/bin/ruby
-#Usage: fp.rb <filename> <support>
-#Example: ./fp.rb ~/tmp/FoodMart.xls 20
+#Usage: ruby fp.rb <filename> <minimum support> <minimum confidence>
+#
+#Example: ruby fp.rb ~/tmp/FoodMart.xls 20 .60
 
 require 'rubygems'
 require 'fp_growth'
@@ -23,13 +23,13 @@ def parsefile(filename)
   sheet_array
 end
 
-def fp(transactions, min_support)
+def fp(transactions, min_support, min_confidence)
   items = FpGrowth::FpTree.get_items(transactions)
   f = FpGrowth::FpTree.new(min_support,items,transactions)
   puts "\nFrequent Itemsets\n\n"
   puts f.fp_growth
   puts "\nStrong Association Rules\n"
-  puts FpGrowth::Helper.create_assoziation_rules(f.fp_growth,0.10)
+  puts FpGrowth::Helper.create_assoziation_rules(f.fp_growth,min_confidence)
 end
 
-fp(parsefile(ARGV[0]), Integer(ARGV[1]))
+fp(parsefile(ARGV[0]), Integer(ARGV[1]), Float(ARGV[2]))
