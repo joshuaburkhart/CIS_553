@@ -1,6 +1,6 @@
 #Usage: ruby fp.rb <filename> <minimum support> <minimum confidence>
 #
-#Example: ruby fp.rb ~/tmp/FoodMart.xls 20 .60
+#Example: ruby fp.rb ~/tmp/FoodMart.xls 5 .70
 
 require 'rubygems'
 require 'fp_growth'
@@ -26,9 +26,6 @@ end
 def fp(transactions, min_support, min_confidence)
   items = FpGrowth::FpTree.get_items(transactions)
   f = FpGrowth::FpTree.new(min_support,items,transactions)
-  puts "\nFrequent Itemsets\n\n"
-  puts f.fp_growth
-  puts "\nStrong Association Rules\n"
   puts FpGrowth::Helper.create_assoziation_rules(f.fp_growth,min_confidence)
 end
 
