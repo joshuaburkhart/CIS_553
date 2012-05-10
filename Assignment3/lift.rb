@@ -9,7 +9,7 @@ require 'parseexcel'
 class FpGrowth::PrefixPath
   attr :lift, true
   def to_s
-    "{#{@array}} support: #{support}, lift: #{lift}"
+    "{#{@array}} support: #{support}, lift: #{(lift*1000).round / 1000.0}"
   end
 end
 
@@ -30,7 +30,7 @@ def parsefile(filename)
   sheet_array
 end
 
-def fp(transactions, min_support)
+def generate_lift(transactions, min_support)
   t_size = Float(transactions.size)
   items = FpGrowth::FpTree.get_items(transactions)
   f = FpGrowth::FpTree.new(min_support,items,transactions)
@@ -52,4 +52,4 @@ def fp(transactions, min_support)
   puts frequent_itemsets.sort { |itemset_1,itemset_2| itemset_1.lift <=> itemset_2.lift}
 end
 
-fp(parsefile(ARGV[0]), Integer(ARGV[1]))
+generate_lift(parsefile(ARGV[0]), Integer(ARGV[1]))

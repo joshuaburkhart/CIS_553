@@ -1,6 +1,6 @@
-#Usage: ruby fp.rb <filename> <minimum support count> <minimum confidence>
+#Usage: ruby rules.rb <filename> <minimum support count> <minimum confidence>
 #
-#Example: ruby fp.rb ~/tmp/FoodMart.xls 5 .70
+#Example: ruby rules.rb ~/tmp/FoodMart.xls 5 .70
 
 require 'rubygems'
 require 'fp_growth'
@@ -8,7 +8,7 @@ require 'parseexcel'
 
 class Hash
   def to_s
-    "{#{fetch(:left)}} => {#{fetch(:right)}} support: #{fetch(:support)}, confidence: #{fetch(:confidence)}"
+    "{#{fetch(:left)}} => {#{fetch(:right)}} support: #{fetch(:support)}, confidence: #{(fetch(:confidence)*1000).round / 1000.0}"
   end
 end
 
@@ -29,7 +29,7 @@ def parsefile(filename)
   sheet_array
 end
 
-def fp(transactions, min_support, min_confidence)
+def generate_rules(transactions, min_support, min_confidence)
   items = FpGrowth::FpTree.get_items(transactions)
   f = FpGrowth::FpTree.new(min_support,items,transactions)
   puts FpGrowth::Helper.create_assoziation_rules(f.fp_growth,min_confidence).sort { |rule_1,rule_2|
@@ -37,4 +37,4 @@ def fp(transactions, min_support, min_confidence)
   }
 end
 
-fp(parsefile(ARGV[0]), Integer(ARGV[1]), Float(ARGV[2]))
+generate_rules(parsefile(ARGV[0]), Integer(ARGV[1]), Float(ARGV[2]))
