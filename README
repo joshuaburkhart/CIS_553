@@ -1,0 +1,6 @@
+CIS453/553, Spring 2012
+Data Mining
+
+http://www.cs.uoregon.edu/Classes/12S/cis453/
+
+Course Description: Data Mining is a multidisciplinary field which involves databases, machine learning, statistics, knowledge acquisition, information retrieval, high-performance computing, and data visualization. Data Mining emerged as an interesting research topic since 1980s and has made great strides during the 1990s. It also has got many successful applications in industry. In this course, we will study methods for data management and preprocessing, data warehousing, concept description, association rule mining, classification and prediction, data cluster analysis and outlier analysis. We will view data mining as the discovery of interesting patterns in data that can be used to describe or summarize the data and to predict future instances of the data. Such patterns are considered to be knowledge discovered by the data mining process. Students will be guided to apply or build different mining tools by themselves to analyze real data sets, such as biomedical data, network data, financial data and retail data. 
