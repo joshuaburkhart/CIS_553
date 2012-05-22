@@ -58,6 +58,8 @@ ATTR_ITEMS.each_index  {|tuple|
 	}
 }
 
+puts table.inspect
+
 data_set = Ai4r::Data::DataSet.new(:data_items=>table, :data_labels=>table_labels)
 id3 = Ai4r::Classifiers::ID3.new.build(data_set)
 
