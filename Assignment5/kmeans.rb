@@ -83,19 +83,19 @@ end
 #DRIVER BELOW
 ##########################
 
-clstrs=[Cluster.new(3,10),
-	Cluster.new(5,8),
-	Cluster.new(2,2)]
+clstrs=[Cluster.new(3.0,10.0),
+	Cluster.new(5.0,8.0),
+	Cluster.new(2.0,2.0)]
 
-points=[Point.new("A1",3,10,clstrs[0]),
-	Point.new("A2",3,5,clstrs[0]),
-	Point.new("A3",9,4,clstrs[0]),
-	Point.new("B1",5,8,clstrs[0]),
-	Point.new("B2",7,5,clstrs[0]),
-	Point.new("B3",6,4,clstrs[0]),
-	Point.new("C1",2,2,clstrs[0]),
-	Point.new("C2",5,9,clstrs[0]),
-	Point.new("C3",6,9,clstrs[0])]
+points=[Point.new("A1",3.0,10.0,clstrs[0]),
+	Point.new("A2",3.0,5.0,clstrs[0]),
+	Point.new("A3",9.0,4.0,clstrs[0]),
+	Point.new("B1",5.0,8.0,clstrs[0]),
+	Point.new("B2",7.0,5.0,clstrs[0]),
+	Point.new("B3",6.0,4.0,clstrs[0]),
+	Point.new("C1",2.0,2.0,clstrs[0]),
+	Point.new("C2",5.0,9.0,clstrs[0]),
+	Point.new("C3",6.0,9.0,clstrs[0])]
 
 difference = 1
 while difference > 0
