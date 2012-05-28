@@ -15,7 +15,7 @@ puts
 
 def valid(line,chrm,limit)
 	within_limit = false
-	if(line.match(/^#{chrm}-.*?[' '].*$/))
+	if(line.match(/^#{chrm}-.*[' '].*$/))
 		line_pos = line.match(/^#{chrm}-(.*?)[' '].*$/)[1]
 		within_limit = (Integer(line_pos) <= Integer(limit))
 		#puts "line_pos: #{line_pos}, limit: #{limit}, within_limit: #{within_limit}"
@@ -29,13 +29,17 @@ File.open(ref_filename,'r') do |ref_file|
 		ref_start = -1
 		ref_label = "no-label"
 		values = Array.new
+
+puts "ref_line: #{ref_line}"
+
 		if(ref_line.match(/^track/))
 			#print ref_line
 		elsif(ref_line.match(/^variableStep/))
 			#print ref_line
-		elsif(ref_line.match(/^chr.*?-.*?[' '].*$/))
+		elsif(ref_line.match(/^chr.*?-.*[' '].*$/))
 			ref_chrm = ref_line.match(/^(chr.*?)-.*$/)[1]
-			ref_start = ref_line.match(/^#{ref_chrm}-(.*?)[' '].*$/)[1]
+puts "ref_chrm: #{ref_chrm}"
+			ref_start = ref_line.match(/^#{ref_chrm}-(.*)[' '].*$/)[1]
 			ref_label = "#{ref_chrm}-#{ref_start}"
 			values << ref_line.match(/^#{ref_label}[' '](.*)$/)[1]
 			aux_files.each_index do |i|
