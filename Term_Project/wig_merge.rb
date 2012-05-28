@@ -13,10 +13,10 @@ aux_l_buf = Array.new
 end
 puts
 
-def valid(line,limit)
+def valid(line,chrm,limit)
 	within_limit = false
-	if(line.match(/^chr.*?-.*?[' ']/))
-		line_pos = line.match(/^chr.*?-(.*?)[' '].*$/)[1]
+	if(line.match(/^#{chrm}-.*?[' '].*$/))
+		line_pos = line.match(/^#{chrm}-(.*?)[' '].*$/)[1]
 		within_limit = (Integer(line_pos) <= Integer(limit))
 		#puts "line_pos: #{line_pos}, limit: #{limit}, within_limit: #{within_limit}"
 	end
@@ -33,19 +33,15 @@ File.open(ref_filename,'r') do |ref_file|
 			#print ref_line
 		elsif(ref_line.match(/^variableStep/))
 			#print ref_line
-		elsif(ref_line.match(/^chr.*?-.*?[' '].*?$/))
+		elsif(ref_line.match(/^chr.*?-.*?[' '].*$/))
 			ref_chrm = ref_line.match(/^(chr.*?)-.*$/)[1]
-			ref_start = ref_line.match(/^chr.*?-(.*?)[' '].*$/)[1]
-			ref_label = ref_line.match(/^(chr.*?-.*?)[' ']/)[1]
-			values << ref_line.match(/^chr.*?-.*?[' '](.*)$/)[1]
+			ref_start = ref_line.match(/^#{ref_chrm}-(.*?)[' '].*$/)[1]
+			ref_label = "#{ref_chrm}-#{ref_start}"
+			values << ref_line.match(/^#{ref_label}[' '](.*)$/)[1]
 			aux_files.each_index do |i|
-				while (cur_line=aux_l_buf[i]) && (valid(cur_line,ref_start))
-					if(cur_line.match(/^chr.*?-.*?[' '].*?$/))
-						aux_label = cur_line.match(/^(chr.*?-.*?)[' ']/)[1]
-						#puts "aux_label: #{aux_label}"
-						if(aux_label == ref_label)
-							values << cur_line.match(/^chr.*?-.*?[' '](.*)$/)[1]
-						end
+				while (cur_line=aux_l_buf[i]) && (valid(cur_line,ref_chrm,ref_start))
+					if(cur_line.match(/^#{ref_label}[' '].*?$/))
+						values << cur_line.match(/^#{ref_label}[' '](.*)$/)[1]
 					end
 					aux_l_buf[i] = aux_files[i].gets
 				end
