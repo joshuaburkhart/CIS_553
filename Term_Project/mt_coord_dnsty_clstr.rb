@@ -18,6 +18,16 @@ class String
 	end
 end
 
+class ClstrGrp < Array
+	attr_accessor :name
+	def initialize(name)
+		@name = name
+	end
+	def to_s
+		@name.strip
+	end
+end
+
 class Cluster < Array
 	attr_accessor :oid
 	def initialize(oid)
@@ -94,10 +104,10 @@ end
 ##########################
 
 #experimental values obtained by quantifying leukemia methylation around chr16 796982-1734187
-epsilon = 482400
-#epsilon = 10000 #test
-mnpts = 919
-#mnpts = 3 #test
+#epsilon = 482400
+epsilon = 10000 #test
+#mnpts = 919
+mnpts = 3 #test
 
 VAL = 1.0
 
@@ -113,9 +123,10 @@ while(file_line)
 		print file_line
 		file_line = file.gets
 	elsif(file_line.match(/^variableStep/))
-		print file_line
+		#print file_line
 		step = file_line.get_step
 		chrm = file_line.get_chromosome
+		cg_name = file_line
 		file_line = file.gets
 		points = Array.new
 		while(file_line && file_line.match(/^[0-9].*?[\s].*$/))
@@ -128,11 +139,12 @@ while(file_line)
 		thread_params << thread_counter
 		thread_counter += 1
 		thread_params << points
+		thread_params << cg_name
 		threads << Thread.new(thread_params) { |params|
 			myid = params[0]
-			puts "Thread #{myid} spawned"
+			#puts "Thread #{myid} spawned"
 			pts = params[1]
-			clstrs = Array.new
+			clstrs = ClstrGrp.new(params[2])
 			clstr_holder = Array.new
 			visit_count = 0
 			cluster_id = 0
@@ -193,6 +205,8 @@ while(file_line)
 			#}
 			#puts "#####################"
 
+
+			#puts "clstr_holder[#{myid}] = #{clstrs}"
 			clstr_holder[myid] = clstrs
 
 			mutex.synchronize do
@@ -200,14 +214,16 @@ while(file_line)
 			end
 		}
 	end
-	clstr_groups.each { |cg|
-		cg.each { |c|
-			(c.min..c.max).step(step) do |i|
-				puts "#{i} #{VAL}"
-			end
-		}
-	}
 end
+
+clstr_groups.each { |cg|
+	puts "#{cg}"
+	cg.each { |c|
+		(c.min..c.max).step(step) do |i|
+			puts "#{i} #{VAL}"
+		end
+	}
+}
 
 threads.each {|t| t.join}
 file.close
