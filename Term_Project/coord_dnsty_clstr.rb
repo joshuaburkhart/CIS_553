@@ -1,5 +1,5 @@
-#Usage: ruby coord_dnsty_clstr.rb <wig file with binary values>
-#Example: ruby coord_dnsty_clstr.rb filter_min.wig
+#Usage: ruby coord_dnsty_clstr.rb <wig file with binary values> <mnpts> <epsilon>
+#Example: ruby coord_dnsty_clstr.rb filter_min.wig 3 1000
 
 class String
 	def get_chromosome
@@ -79,10 +79,10 @@ end
 ##########################
 
 #experimental values obtained by quantifying leukemia methylation around chr16 796982-1734187
-#epsilon = 482400
-epsilon = 10000 # test
-#mnpts = 919
-mnpts = 3 # test
+mnpts = Integer(ARGV[1])
+#mnpts = 3 #test
+epsilon = Integer(ARGV[2])
+#epsilon = 10000 #test
 
 VAL = 1.0
 
