@@ -6,13 +6,13 @@ class String
 		self.match(/^.*chrom=(.*?)[\s].*$/)[1]
 	end
 	def get_coordinate
-		self.match(/^([0-9].*?)[\s].*$/)[1]
+		Integer(self.match(/^([0-9].*?)[\s].*$/)[1])
 	end
 	def get_value
-		"%f" % self.match(/^[0-9].*?[\s]+([0-9]+['.'][0-9]+).*$/)[1]
+		Float("%f" % self.match(/^[0-9].*?[\s]+([0-9]+['.'][0-9]+).*$/)[1])
 	end
 	def get_step
-		self.match(/^.*span=([0-9]+).*$/)
+		Integer(self.match(/^.*span=([0-9]+).*$/)[1])
 	end
 end
 
@@ -29,13 +29,13 @@ class Cluster < Array
 		puts
 	end
 	def order
-		self.sort {|i,j| ("%f" % "#{i.split("\s")[0]}").to_f <=> ("%f" % "#{j.split("\s")[0]}").to_f}
+		self.sort {|i,j| i.coord <=> j.coord}
 	end 
 	def max 
-		"%f" % self.order.last
+		self.order.last.coord
 	end 
 	def min 
-		"%f" % self.order.first 
+		self.order.first.coord
 	end 
 end
 
@@ -45,14 +45,15 @@ class Point
 	attr_accessor :coord
 	attr_accessor :visited
 	attr_accessor :noise
-	def initialize(name)
-		@name = name
+	def initialize(line,chrm)
+		@name = line.strip
+		@chrm = chrm
 		@coord = name.get_coordinate
 		@visited = false
 		@noise = false
 	end
 	def to_s
-		"#{@name}(visited=#{@visited}-noise=#{@noise}-cluster=#{@cluster.nil? ? -1 : @cluster.oid}"
+		"#{@name} {chrm=#{@chrm}, visited=#{@visited}, noise=#{@noise}, cluster=#{@cluster.nil? ? -1 : @cluster.oid}}"
 	end
 	def setCluster(c)
 		@noise = false
@@ -62,7 +63,7 @@ class Point
 end
 
 def dist(p1,p2)
-	((p1.coord - p2.coord)**2.0)**(1.0/2.0)
+	((Integer(p1.coord) - Integer(p2.coord))**2.0)**(1.0/2.0)
 end
 
 def print_cs(clstrs)
@@ -78,29 +79,30 @@ end
 ##########################
 
 #experimental values obtained by quantifying leukemia methylation around chr16 796982-1734187
-epsilon = 482400
-mnpts = 1224885
+epsilon = 482400 # 10000 for test data
+mnpts = 1224885 # 3 for test data
 
 VAL = 1.0
 
-pts = Array.new
 
 file = File.open(ARGV[0])
-file_line = file.readline
+file_line = file.gets
 while(file_line)
 	#print line if track or validation
 	if(file_line.match(/^track/))
 		print file_line
-		file_line = file.readline
+		file_line = file.gets
 	elsif(file_line.match(/^variableStep/))
 		print file_line
 		step = file_line.get_step
 		chrm = file_line.get_chromosome
-		file_line = file.readline
-		while(file_line.match(/^[0-9].*?[\s].*$/))
+		file_line = file.gets
+		pts = Array.new
+		while(file_line && file_line.match(/^[0-9].*?[\s].*$/))
 			if(file_line.get_value == VAL)
-				pts << Point.new(filter_line)
-			end		
+				pts << Point.new(file_line,chrm)
+			end
+			file_line = file.gets
 		end
 		clstrs = Array.new
 
@@ -153,16 +155,6 @@ while(file_line)
 				end
 			end
 		}
-		clstrs.each { |c|
-			(clstr.min..clstr.max).step(step) do |i|
-			    puts "#{i} #{VAL}"
-			end
-		}
-	end
-end
-
-
-
 		#print_cs(clstrs)
 		#puts "#####################"
 		#puts "Noisy Points:"
@@ -173,5 +165,15 @@ end
 		#}
 		#puts "#####################"
 
-		file.close
+		clstrs.each { |c|
+			(c.min..c.max).step(step) do |i|
+				puts "#{i} #{VAL}"
+			end
+		}
+	end
+end
+
+
+
+file.close
 
