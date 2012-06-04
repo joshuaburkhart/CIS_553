@@ -215,7 +215,8 @@ while(file_line)
 		}
 	end
 end
-
+threads.each {|t| t.join}
+file.close
 clstr_groups.each { |cg|
 	puts "#{cg}"
 	cg.each { |c|
@@ -225,6 +226,4 @@ clstr_groups.each { |cg|
 	}
 }
 
-threads.each {|t| t.join}
-file.close
 
