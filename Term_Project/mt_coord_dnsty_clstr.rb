@@ -94,10 +94,10 @@ end
 ##########################
 
 #experimental values obtained by quantifying leukemia methylation around chr16 796982-1734187
-#epsilon = 482400
-epsilon = 10000 #test
-#mnpts = 1224885
-mnpts = 3 #test
+epsilon = 482400
+#epsilon = 10000 #test
+mnpts = 919
+#mnpts = 3 #test
 
 VAL = 1.0
 
