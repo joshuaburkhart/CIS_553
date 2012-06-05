@@ -1,8 +1,8 @@
 #Usage: ruby binary_filter.rb <file to be filtered> <filter file>
 #Example: ruby binary_filter.rb merged.wig.explicit healthy.wig.explicit
 
-MAX_VAL = 1.0
-MIN_VAL = 0.0
+MAX_VAL = 0.0 #value when filter is maximum
+MIN_VAL = 1.0 #value when filter is minimum
 
 # monkey patches
 
