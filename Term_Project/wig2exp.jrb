@@ -1,5 +1,5 @@
-#Usage: ruby explicit_position.rb <filename>
-#Example: ruby explicit_position.rb ~/Documents/methylation_data/cml/ESX000001749.wig > ~/Documents/methylation_data/cml/ESX000001749.wig.explicit
+#Usage: jruby wig2exp.jrb <filename>
+#Example: jruby wig2exp.jrb ~/Documents/methylation_data/cml/ESX000001749.wig > ~/Documents/methylation_data/cml/ESX000001749.wig.explicit
 
 filename = ARGV[0]
 File.open(filename,'r') do |file|

@@ -1,7 +1,7 @@
-#Usage: ruby wig_merge.rb <reference filename> <auxillary filename 1> <auxillary filename 2>
-#Example: ruby wig_merge.rb ESX0000001760.wig ESX0000001748.wig ESX0000003301.wig
+#Usage: jruby merge2exp.jrb <reference filename> <auxillary filename 1> <auxillary filename 2>
+#Example: jruby merge2exp.jrb ESX0000001760.wig ESX0000001748.wig ESX0000003301.wig
 
-merge_handle = File.open('merge_test.txt','w')
+merge_handle = File.open('merged.wig.exp','w')
 
 ref_filename = ARGV[0]
 merge_handle.print "\t#{ref_filename}\t"

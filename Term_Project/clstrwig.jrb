@@ -1,5 +1,5 @@
-#Usage: ruby mt_coord_dnsty_clstr.rb <wig file with binary values> <mnpts> <epsilon>
-#Example: ruby mt_coord_dnsty_clstr.rb filter_min.wig 3 1000
+#Usage: jruby clstrwig.jrb <wig file with binary values> <mnpts> <epsilon>
+#Example: jruby clstrwig.jrb filter_min.wig 3 1000
 
 require 'thread'
 
